@@ -3,16 +3,21 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon ./express.js"
+    "dev": "nodemon ./midleware.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "2.0.18"
+    "nodemon": "^1.3.3"
   },
   "dependencies": {
-    "express": "4.18.1"
+    "cookie-parser": "^1.4.6",
+    "dotenv": "16.0.1",
+    "express": "4.18.1",
+    "jose": "4.8.3",
+    "nanoid": "^4.0.0"
   }
 }

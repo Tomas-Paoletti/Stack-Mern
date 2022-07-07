@@ -1,12 +1,28 @@
+//autenticacion comprobar si es quien dice ser(identificar usuario)
+//autorizacion:  si tiene acceso a cada privilegio de la aplicacion
+
 console.log("hola  putines");
+import dotenv from "dotenv";
+dotenv.config(); // con esto nos toma el archivo .env
+import express from "express";
+import cookieParser from "cookie-parser";
+import accountRouter from "./routes/account.js";
+import authSessionRouter from "./routes/auth_session.js";
+import auth_token from "./routes/auth_token.js";
+import authRouter from "./routes/auth.js";
 
-const express = require("express");
-const { ppid } = require("process");
-const PORT = 3010;
-const app = createExpressServer(); // aca el parametro es el puerto del servidor
-
-app.use(express.json)
-app.use(express.text)
-app.listen( PORT, ()=>{
-     
-})
+const PORT = process.env.PORT;
+const app = express(); // aca el parametro es el puerto del servidor
+app.use(cookieParser());
+app.use(express.json());
+app.use(express.text());
+app.use("/account", accountRouter);
+app.use("/auth", authRouter);
+app.use("/auth_session", authSessionRouter);
+//obtener datos de una cuenta del guid
+app.get("/raiz", (req, res) => {
+  res.send();
+});
+app.listen(PORT, () => {
+  console.log(`puerto en ${PORT}`);
+});
