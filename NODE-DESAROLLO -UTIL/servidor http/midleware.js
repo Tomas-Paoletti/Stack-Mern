@@ -8,7 +8,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import accountRouter from "./routes/account.js";
 import authSessionRouter from "./routes/auth_session.js";
-import auth_token from "./routes/auth_token.js";
+import authTokenRouter from "./routes/auth_token.js";
 import authRouter from "./routes/auth.js";
 
 const PORT = process.env.PORT;
@@ -19,6 +19,7 @@ app.use(express.text());
 app.use("/account", accountRouter);
 app.use("/auth", authRouter);
 app.use("/auth_session", authSessionRouter);
+app.use("/auth_token", authTokenRouter);
 //obtener datos de una cuenta del guid
 app.get("/raiz", (req, res) => {
   res.send();

@@ -4,8 +4,7 @@ export const USERS_BBDD = [
     index: 0,
     guid: "107916b9-63ec-4c8c-bb90-19fdb4e33747",
     name: "Tomas Paoletti",
-    email: "tomiagustin.tp@gmail.com",
-    password: "123",
+     
     rol: "admin",
     isActive: false,
     balance: "$3,298.49",
