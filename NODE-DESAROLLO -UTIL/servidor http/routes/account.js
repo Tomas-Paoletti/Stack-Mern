@@ -1,18 +1,19 @@
 import express from "express";
 const accountRouter = express.Router();
 import { USERS_BBDD } from "../bbdd.js";
+import userModel from "../schemas/user-schema.js";
 
-accountRouter.use((req, res , next) => {
+accountRouter.use((req, res, next) => {
   console.log(req.ip);
-  next();  
+  next();
 });
 accountRouter.get("/account", (req, res) => {
   res.end(console.log("si hay conexion"));
 });
 
-accountRouter.get("/account/:guid", (req, res) => {
+accountRouter.get("/account/:guid", async (req, res) => {
   const { guid } = req.params;
-  const user = USERS_BBDD.find((user) => user.guid === req.params.guid);
+  const user = await userModel.findById(guid).exec();
   if (!user) {
     res.status(404).send();
   }
@@ -20,27 +21,25 @@ accountRouter.get("/account/:guid", (req, res) => {
 });
 //crear nurva cuenta a travez de guid
 
-accountRouter.post("/account/", (req, res) => {
+accountRouter.post("/", async (req, res) => {
   const { guid, name } = req.body;
   if (!name || !guid) {
     res.state(400).send();
   }
+  const user = await userModel.findById(guid).exec();
 
-  const user = USERS_BBDD.find((user) => user.guid === guid);
   if (user) {
     return res.status(409).send();
   }
-  USERS_BBDD.push({
-    guid,
-    name,
-  });
+  const newUser = new userModel({ _id: guid, name });
+  await newUser.save();
 
   return res.send();
 });
 //actualizar el nombre de una cuenta
 
-accountRouter.patch("/account/:guid", (req, res) => {
-  const user = USERS_BBDD.find((user) => user.guid === req.params.guid);
+accountRouter.patch("/account/:guid", async (req, res) => {
+  const user = await userModel.findById(guid).exec();
   const { name } = req.body;
 
   if (!name) {
@@ -51,18 +50,18 @@ accountRouter.patch("/account/:guid", (req, res) => {
   }
   user.name = name;
 
+  await user.save();
   return res.send();
 });
 //eliminar
 
-accountRouter.delete("/account/:guid", (req, res) => {
-  const userIndex = USERS_BBDD.findIndex(
-    (user) => user.guid === req.params.guid
-  ); //solo nos devuelve el index de la busqueda
-  if (userIndex === -1) {
+accountRouter.delete("/account/:guid", async (req, res) => {
+  const user = await userModel.findById(guid).exec();
+
+  if (!user) {
     res.status(404).send();
   }
-  USERS_BBDD.splice(userIndex, 1); //elimina el elemento del array
+  await user.remove(); //elimina el elemento del array
   return res.send();
 });
 

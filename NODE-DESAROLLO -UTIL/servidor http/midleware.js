@@ -10,6 +10,7 @@ import accountRouter from "./routes/account.js";
 import authSessionRouter from "./routes/auth_session.js";
 import authTokenRouter from "./routes/auth_token.js";
 import authRouter from "./routes/auth.js";
+import mongoose from "mongoose";
 
 const PORT = process.env.PORT;
 const app = express(); // aca el parametro es el puerto del servidor
@@ -24,6 +25,13 @@ app.use("/auth_token", authTokenRouter);
 app.get("/raiz", (req, res) => {
   res.send();
 });
-app.listen(PORT, () => {
-  console.log(`puerto en ${PORT}`);
-});
+
+const bootstrap = async () => {
+  //funcion para ejecutar el inicio del servidor y la base de datos ya que la conexion ala base de datos es asincrona
+  await mongoose.connect(process.env.MONGODB_URL);
+  app.listen(PORT, () => {
+    console.log(`puerto en ${PORT}`);
+  });
+};
+
+bootstrap();
