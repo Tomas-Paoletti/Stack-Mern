@@ -7,6 +7,6 @@ const App = express();
 App.use(express.json())
 
 //routes
-application.use('/user', userRouter)
+App.use('/user', userRouter)
 
 export default App;
